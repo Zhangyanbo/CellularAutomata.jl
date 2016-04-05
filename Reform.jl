@@ -37,6 +37,39 @@ function reformer(mat, st = 1)
   return counter
 end
 
+function line_mat_d(mat, p, d)
+  move = [digits(i, d, 2) for i = 0:d^2 - 1]
+
+  data = fill(0, length(move))
+  for i = 1:length(move)
+    data[i] = mat[(p + move[i])...]
+  end
+
+  return data
+end
+
+function only_count_num(mat, st, d)
+  doter = [2^i for i = 0:d^2 - 1];
+  types = fill(-1, 2^(d^2));
+
+  k = 0;
+  for i = st:size(mat)[1]- d - 1, j = 2:size(mat)[2]- d - 1
+    p = dot(line_mat_d(mat, [i, j], d), doter);
+    t = false;
+    for j = 1:k
+      if types[j] == p
+        t = true;
+      end
+    end
+    if !t
+      k += 1;
+      types[k] = p;
+    end
+  end
+
+  return k
+  #return types
+end
 # output function
 
 count_num(counter) = sum(counter)
